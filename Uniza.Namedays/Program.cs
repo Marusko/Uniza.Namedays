@@ -1,10 +1,21 @@
-﻿namespace Uniza.Namedays
+﻿using System.Collections;
+
+namespace Uniza.Namedays
 {
-    internal class Program
+    internal class NamedayCalendar : IEnumerable<Nameday>
     {
+        public IEnumerator<Nameday> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 
-    struct DayMonth
+    record struct DayMonth
     {
         public int Day { get; init; }
         public int Month { get; init; }
@@ -27,7 +38,7 @@
         }
     }
 
-    struct Nameday
+    record struct Nameday
     {
         public string Name { get; init; }
         public DayMonth DayMonth { get; init; }
