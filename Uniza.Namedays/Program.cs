@@ -26,4 +26,18 @@
             return new DateTime(DateTime.Now.Year, Month, Day);
         }
     }
+
+    struct Nameday
+    {
+        public string Name { get; init; }
+        public DayMonth DayMonth { get; init; }
+
+        public Nameday() { }
+
+        public Nameday(string name, DayMonth dayMonth)
+        {
+            Name = name;
+            DayMonth = dayMonth;
+        }
+    }
 }
