@@ -2,7 +2,7 @@
 
 namespace Uniza.Namedays
 {
-    internal class NamedayCalendar : IEnumerable<Nameday>
+    record NamedayCalendar : IEnumerable<Nameday>
     {
         public IEnumerator<Nameday> GetEnumerator()
         {
