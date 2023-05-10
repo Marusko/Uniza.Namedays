@@ -58,30 +58,12 @@ namespace Uniza.Namedays
 
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            var mesiac = new List<Nameday>();
-            GetEnumerator().Reset();
-            while (GetEnumerator().MoveNext())
-            {
-                if (GetEnumerator().Current.DayMonth.Month == month)
-                {
-                    mesiac.Add(GetEnumerator().Current);
-                }
-            }
-            return mesiac;
+            return from nameday in _kalendar where nameday.DayMonth.Month == month select nameday;
         }
 
         public IEnumerable<Nameday> GetNamedays(string pattern)
         {
-            var regex = new List<Nameday>();
-            GetEnumerator().Reset();
-            while (GetEnumerator().MoveNext())
-            {
-                if (Regex.IsMatch(GetEnumerator().Current.Name, pattern))
-                {
-                    regex.Add(GetEnumerator().Current);
-                }
-            }
-            return regex;
+            return from nameday in _kalendar where Regex.IsMatch(nameday.Name, pattern) select nameday;
         }
 
         public void Add(Nameday nameday)
@@ -120,7 +102,6 @@ namespace Uniza.Namedays
                     return true;
                 }
             }
-
             return false;
         }
 
