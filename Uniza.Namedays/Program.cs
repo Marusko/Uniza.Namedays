@@ -13,7 +13,7 @@ namespace Uniza.Namedays
             {
                 if (Contains(name))
                 {
-                       
+                    return GetEnumerator().Current.DayMonth;
                 }
                 return null;
             }
@@ -28,7 +28,7 @@ namespace Uniza.Namedays
 
         public IEnumerator<Nameday> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _kalendar.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -37,17 +37,17 @@ namespace Uniza.Namedays
 
         public IEnumerable<Nameday> GetNamedays()
         {
-            throw new NotImplementedException();
+            
         }
 
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            throw new NotImplementedException();
+            
         }
 
         public IEnumerable<Nameday> GetNamedays(string pattern)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Add(Nameday nameday)
@@ -73,12 +73,25 @@ namespace Uniza.Namedays
 
         public bool Remove(string name)
         {
+            if (Contains(name))
+            {
+                return _kalendar.Remove(GetEnumerator().Current);
+            }
 
+            return false;
         }
 
         public bool Contains(string name)
         {
+            while (GetEnumerator().MoveNext())
+            {
+                if (GetEnumerator().Current.Name.Equals(name))
+                {
+                    return true;
+                }
+            }
 
+            return false;
         }
 
         public void Clear()
@@ -97,21 +110,13 @@ namespace Uniza.Namedays
         }
     }
 
-    record struct DayMonth
+    record struct DayMonth(int Day, int Month)
     {
-        public int Day { get; init; }
-        public int Month { get; init; }
+        public int Day { get; init; } = Day;
+        public int Month { get; init; } = Month;
 
-        public DayMonth()
+        public DayMonth() : this(DateTime.Now.Day, DateTime.Now.Month)
         {
-            Day = DateTime.Now.Day;
-            Month = DateTime.Now.Month;
-        }
-
-        public DayMonth(int day, int month)
-        {
-            Day = day;
-            Month = month;
         }
 
         public DateTime ToDateTime()
