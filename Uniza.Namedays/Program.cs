@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Globalization;
+﻿using System.Collections;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace Uniza.Namedays
 {
@@ -23,10 +20,25 @@ namespace Uniza.Namedays
             }
         }
 
-        public string[] this[DayMonth dayMonth] { get; }
-        public string[] this[DateOnly date] { get; }
-        public string[] this[DateTime date] { get; }
-        public string[] this[int day, int month] { get; }
+        public string[] this[DayMonth dayMonth] => 
+            (from meno in _kalendar 
+                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month 
+                select meno.Name).ToArray();
+
+        public string[] this[DateOnly date] => 
+            (from meno in _kalendar 
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month 
+                select meno.Name).ToArray();
+
+        public string[] this[DateTime date] =>
+            (from meno in _kalendar
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month
+                select meno.Name).ToArray();
+
+        public string[] this[int day, int month] =>
+            (from meno in _kalendar 
+                where meno.DayMonth.Day == day && meno.DayMonth.Month == month 
+                select meno.Name).ToArray();
 
         private readonly List<Nameday> _kalendar = new();
 
@@ -46,7 +58,7 @@ namespace Uniza.Namedays
 
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            List<Nameday> mesiac = new List<Nameday>();
+            var mesiac = new List<Nameday>();
             GetEnumerator().Reset();
             while (GetEnumerator().MoveNext())
             {
@@ -60,7 +72,7 @@ namespace Uniza.Namedays
 
         public IEnumerable<Nameday> GetNamedays(string pattern)
         {
-            List<Nameday> regex = new List<Nameday>();
+            var regex = new List<Nameday>();
             GetEnumerator().Reset();
             while (GetEnumerator().MoveNext())
             {
@@ -95,12 +107,7 @@ namespace Uniza.Namedays
 
         public bool Remove(string name)
         {
-            if (Contains(name))
-            {
-                return _kalendar.Remove(GetEnumerator().Current);
-            }
-
-            return false;
+            return Contains(name) && _kalendar.Remove(GetEnumerator().Current);
         }
 
         public bool Contains(string name)
@@ -129,32 +136,30 @@ namespace Uniza.Namedays
                 return;
             }
             var stream = csvFile.Open(FileMode.Open);
-            StreamReader reader = new StreamReader(stream);
+            var reader = new StreamReader(stream);
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
-                if (!string.IsNullOrEmpty(line))
+                if (string.IsNullOrEmpty(line)) continue;
+                var splitted = line.Split(";");
+                var names = new List<string>();
+                for (var i = 1; i < splitted.Length; i++)
                 {
-                    var splitted = line.Split(";");
-                    List<string> names = new List<string>();
-                    for (int i = 1; i < splitted.Length; i++)
+                    var tmp = splitted[i].Trim();
+                    if (!string.IsNullOrEmpty(tmp) || !tmp.Equals("-"))
                     {
-                        var tmp = splitted[i].Trim();
-                        if (!string.IsNullOrEmpty(tmp) || !tmp.Equals("-"))
-                        {
-                            names.Add(tmp);
-                        }
+                        names.Add(tmp);
                     }
-
-                    var datum = splitted[0];
-                    var dotIndex = datum.IndexOf('.');
-                    var dotLenght = datum.Length - datum.Substring(dotIndex).Length;
-                    var lastDotLenght = datum.Length - dotLenght - 2;
-                    var day = datum.Substring(0, dotLenght).Trim();
-                    var month = datum.Substring(dotIndex + 1, lastDotLenght).Trim();
-
-                    Add(int.Parse(day), int.Parse(month), names.ToArray());
                 }
+
+                var datum = splitted[0];
+                var dotIndex = datum.IndexOf('.');
+                var dotLength = datum.Length - datum.Substring(dotIndex).Length;
+                var lastDotLength = datum.Length - dotLength - 2;
+                var day = datum.Substring(0, dotLength).Trim();
+                var month = datum.Substring(dotIndex + 1, lastDotLength).Trim();
+
+                Add(int.Parse(day), int.Parse(month), names.ToArray());
             }
             reader.Close();
             stream.Close();
@@ -173,6 +178,8 @@ namespace Uniza.Namedays
             {
                 writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{nameday.Name}");
             }
+            writer.Close();
+            stream.Close();
         }
     }
 
