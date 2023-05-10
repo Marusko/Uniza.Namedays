@@ -81,7 +81,7 @@ namespace Uniza.Namedays
         /// <summary>
         /// Vráti objekt, ktorý vracia všetky meniny v kalendári
         /// </summary>
-        /// <returns>Vráti objekt implementujúci IEnumerator<Nameday>, ktorý vracia všetky meniny v kalendári</returns>
+        /// <returns>Vráti objekt implementujúci IEnumerator, ktorý vracia všetky meniny v kalendári</returns>
         public IEnumerator<Nameday> GetEnumerator()
         {
             return _kalendar.GetEnumerator();
@@ -89,7 +89,7 @@ namespace Uniza.Namedays
         /// <summary>
         /// Vráti objekt, ktorý vracia všetky meniny v kalendári
         /// </summary>
-        /// <returns>Vráti objekt implementujúci IEnumerator<Nameday>, ktorý vracia všetky meniny v kalendári</returns>
+        /// <returns>Vráti objekt implementujúci IEnumerator, ktorý vracia všetky meniny v kalendári</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
