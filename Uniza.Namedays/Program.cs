@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Uniza.Namedays
 {
@@ -37,17 +40,35 @@ namespace Uniza.Namedays
 
         public IEnumerable<Nameday> GetNamedays()
         {
-            
+            return _kalendar;
         }
 
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            
+            List<Nameday> mesiac = new List<Nameday>();
+            GetEnumerator().Reset();
+            while (GetEnumerator().MoveNext())
+            {
+                if (GetEnumerator().Current.DayMonth.Month == month)
+                {
+                    mesiac.Add(GetEnumerator().Current);
+                }
+            }
+            return mesiac;
         }
 
         public IEnumerable<Nameday> GetNamedays(string pattern)
         {
-            
+            List<Nameday> regex = new List<Nameday>();
+            GetEnumerator().Reset();
+            while (GetEnumerator().MoveNext())
+            {
+                if (Regex.IsMatch(GetEnumerator().Current.Name, pattern))
+                {
+                    regex.Add(GetEnumerator().Current);
+                }
+            }
+            return regex;
         }
 
         public void Add(Nameday nameday)
@@ -83,6 +104,7 @@ namespace Uniza.Namedays
 
         public bool Contains(string name)
         {
+            GetEnumerator().Reset();
             while (GetEnumerator().MoveNext())
             {
                 if (GetEnumerator().Current.Name.Equals(name))
