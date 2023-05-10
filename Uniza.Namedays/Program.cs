@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -123,12 +124,55 @@ namespace Uniza.Namedays
 
         public void Load(FileInfo csvFile)
         {
+            if (!csvFile.Extension.Equals(".csv"))
+            {
+                return;
+            }
+            var stream = csvFile.Open(FileMode.Open);
+            StreamReader reader = new StreamReader(stream);
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                if (!string.IsNullOrEmpty(line))
+                {
+                    var splitted = line.Split(";");
+                    List<string> names = new List<string>();
+                    for (int i = 1; i < splitted.Length; i++)
+                    {
+                        var tmp = splitted[i].Trim();
+                        if (!string.IsNullOrEmpty(tmp) || !tmp.Equals("-"))
+                        {
+                            names.Add(tmp);
+                        }
+                    }
 
+                    var datum = splitted[0];
+                    var dotIndex = datum.IndexOf('.');
+                    var dotLenght = datum.Length - datum.Substring(dotIndex).Length;
+                    var lastDotLenght = datum.Length - dotLenght - 2;
+                    var day = datum.Substring(0, dotLenght).Trim();
+                    var month = datum.Substring(dotIndex + 1, lastDotLenght).Trim();
+
+                    Add(int.Parse(day), int.Parse(month), names.ToArray());
+                }
+            }
+            reader.Close();
+            stream.Close();
         }
 
         public void Save(FileInfo csvFile)
         {
-
+            //TODO nefunguje tak ako ma
+            if (!csvFile.Extension.Equals(".csv"))
+            {
+                return;
+            }
+            var stream = csvFile.Open(FileMode.Open);
+            var writer = new StreamWriter(stream);
+            foreach (var nameday in _kalendar)
+            {
+                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{nameday.Name}");
+            }
         }
     }
 
