@@ -3,6 +3,7 @@
     internal class ConsoleViewer
     {
         private NamedayCalendar _calendar;
+        private int _choice;
 
         public ConsoleViewer(FileInfo cesta)
         {
@@ -30,7 +31,58 @@
                               "\n4 - vyhľadať mená podľa dátumu" +
                               "\n5 - zobraziť kalendár mien v mesiaci" +
                               "\n6 | Escape - koniec" +
-                              "\nVaša voľba: ");
+                              "\nVaša voľba: "); 
+            
+            
+            if (int.TryParse(Console.ReadLine(), out _choice))
+            {
+                Console.Clear();
+                switch (_choice)
+                {
+                    case 1: Load();
+                        break;
+                    case 2: ShowStatistics();
+                        break;
+                    case 3: SearchNames();
+                            break;
+                    case 4: SearchNamesByDate();
+                            break;
+                    case 5: ShowNamedaysInMonth();
+                            break;
+                    default: Environment.Exit(0);
+                            break;
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Show();
+            }
+        }
+
+        private void Load()
+        {
+            Console.WriteLine("NAČÍTANIE");
+        }
+
+        private void ShowStatistics()
+        {
+            Console.WriteLine("ŠTATISTIKA");
+        }
+
+        private void SearchNames()
+        {
+            Console.WriteLine("VYHĽADÁVENIE MIEN");
+        }
+
+        private void SearchNamesByDate()
+        {
+            Console.WriteLine("VYHĽADÁVANIE MIEN PODĽA DÁTUMU");
+        }
+
+        private void ShowNamedaysInMonth()
+        {
+            Console.WriteLine("KALENDÁR MENÍN");
         }
     }
 }
