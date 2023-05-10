@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uniza.Namedays", "Uniza.Namedays\Uniza.Namedays.csproj", "{60A75EC9-0CE1-4102-991C-DF4B3E8255F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uniza.Namedays", "Uniza.Namedays\Uniza.Namedays.csproj", "{60A75EC9-0CE1-4102-991C-DF4B3E8255F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uniza.Namedays.ViewerConsoleApp", "Uniza.Namedays.ViewerConsoleApp\Uniza.Namedays.ViewerConsoleApp.csproj", "{DDDBF971-4435-4C79-8A53-A5501B19B95E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{60A75EC9-0CE1-4102-991C-DF4B3E8255F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60A75EC9-0CE1-4102-991C-DF4B3E8255F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60A75EC9-0CE1-4102-991C-DF4B3E8255F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDBF971-4435-4C79-8A53-A5501B19B95E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDBF971-4435-4C79-8A53-A5501B19B95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDBF971-4435-4C79-8A53-A5501B19B95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDBF971-4435-4C79-8A53-A5501B19B95E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

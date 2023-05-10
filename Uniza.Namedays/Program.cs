@@ -3,9 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Uniza.Namedays
 {
-    record NamedayCalendar : IEnumerable<Nameday>
+    public record NamedayCalendar : IEnumerable<Nameday>
     {
         public int NameCount { get; }
+        //TODO day count, nameCount
         public int DayCount { get; }
 
         public DayMonth? this[string name]
@@ -127,7 +128,7 @@ namespace Uniza.Namedays
                 for (var i = 1; i < splitted.Length; i++)
                 {
                     var tmp = splitted[i].Trim();
-                    if (!string.IsNullOrEmpty(tmp) || !tmp.Equals("-"))
+                    if (!string.IsNullOrEmpty(tmp) && !tmp.Equals("-"))
                     {
                         names.Add(tmp);
                     }
@@ -148,7 +149,6 @@ namespace Uniza.Namedays
 
         public void Save(FileInfo csvFile)
         {
-            //TODO nefunguje tak ako ma
             if (!csvFile.Extension.Equals(".csv"))
             {
                 return;
@@ -157,14 +157,14 @@ namespace Uniza.Namedays
             var writer = new StreamWriter(stream);
             foreach (var nameday in _kalendar)
             {
-                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{nameday.Name}");
+                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{string.Join(";", this[nameday.DayMonth.Day, nameday.DayMonth.Month])}");
             }
             writer.Close();
             stream.Close();
         }
     }
 
-    record struct DayMonth(int Day, int Month)
+    public record struct DayMonth(int Day, int Month)
     {
         public int Day { get; init; } = Day;
         public int Month { get; init; } = Month;
@@ -179,7 +179,7 @@ namespace Uniza.Namedays
         }
     }
 
-    record struct Nameday
+    public record struct Nameday
     {
         public string Name { get; init; }
         public DayMonth DayMonth { get; init; }

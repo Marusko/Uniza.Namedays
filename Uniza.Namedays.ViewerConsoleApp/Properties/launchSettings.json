@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Uniza.Namedays.ViewerConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\matus\\Desktop\\UNIZA\\Učenie\\4_semester\\C_sharp\\Cvicenia\\namedays-sk.csv\""
+    }
+  }
+}
