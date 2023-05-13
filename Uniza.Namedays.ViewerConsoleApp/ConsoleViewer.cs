@@ -22,8 +22,8 @@
         public void Show()
         {
             Console.WriteLine("KALENDÁR MIEN");
-            Console.WriteLine($"Dnes {DateTime.Now.ToShortDateString()} " + (_calendar[DateTime.Now].Length == 0 ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now])}"));
-            Console.WriteLine("Zajtra " + (_calendar[DateTime.Now.AddDays(1)].Length == 0 ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now.AddDays(1)])}"));
+            Console.WriteLine($"Dnes {DateTime.Now.ToShortDateString()} " + (_calendar[DateTime.Now].Equals("0") ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now])}"));
+            Console.WriteLine("Zajtra " + (_calendar[DateTime.Now.AddDays(1)].Equals("0") ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now.AddDays(1)])}"));
             Console.WriteLine();
             Console.Write("Menu\n1 - načítať kalendár" +
                               "\n2 - zobraziť štatistiku" +
@@ -63,6 +63,33 @@
         private void Load()
         {
             Console.WriteLine("NAČÍTANIE");
+            Console.WriteLine("Zadajte cestu ku súboru: ");
+            FileInfo cesta = new FileInfo(Console.ReadLine());
+            if (!cesta.Exists)
+            {
+                Console.WriteLine("Zadaný súbor neexistuje!");
+                Console.WriteLine("Zadajte cestu ku súboru: ");
+                cesta = new FileInfo(Console.ReadLine());
+            }
+            else
+            {
+                if (!cesta.Extension.ToLower().Equals(".csv"))
+                {
+                    Console.WriteLine($"Zadaný súbor {cesta.Name} nie je typu CSV!");
+                    Console.WriteLine("Zadajte cestu ku súboru: ");
+                    cesta = new FileInfo(Console.ReadLine());
+                }
+                else
+                {
+                    _calendar.Load(cesta);
+                    Console.WriteLine("Kalendár bol načítaný.\nPre pokračovanie stlačte Enter");
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    {
+                        Console.Clear();
+                        Show();
+                    }
+                }
+            }
         }
 
         private void ShowStatistics()

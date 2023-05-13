@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Uniza.Namedays
 {
@@ -218,6 +219,10 @@ namespace Uniza.Namedays
                     if (!string.IsNullOrEmpty(tmp) && !tmp.Equals("-"))
                     {
                         names.Add(tmp);
+                    }
+                    else if(tmp.Equals("-"))
+                    {
+                        names.Add("0");
                     }
                 }
 
