@@ -13,11 +13,15 @@ namespace Uniza.Namedays
         /// <summary>
         /// Vráti celkový počet mien v kalendári
         /// </summary>
-        public int NameCount { get; }
+        public int NameCount => _nameCount;
+
         /// <summary>
         /// Vráti celkový počet dní, v ktorých má niekto meniny
         /// </summary>
-        public int DayCount { get; }
+        public int DayCount => _dayCount;
+
+        private int _nameCount = 0;
+        private int _dayCount = 0;
 
         /// <summary>
         /// Indexer vráti deň a mesiac oslavy zadaného mena
@@ -129,7 +133,17 @@ namespace Uniza.Namedays
         /// <param name="nameday">Štruktúra Nameday so zadaným menom a dátumom</param>
         public void Add(Nameday nameday)
         {
+            if (!nameday.Name.Equals("0"))
+            {
+                _nameCount++;
+            }
+
+            if (!nameday.Name.Equals("0") && this[nameday.DayMonth].Length == 0)
+            {
+                _dayCount++;
+            }
             _kalendar.Add(nameday);
+            
         }
 
         /// <summary>
@@ -140,9 +154,17 @@ namespace Uniza.Namedays
         /// <param name="names">Meno/mená, ktoré sa uloží/uložia do kalendára</param>
         public void Add(int day, int month, params string[] names)
         {
+            if (!names[0].Equals("0") && this[day, month].Length == 0)
+            {
+                _dayCount++;
+            }
             foreach (var name in names)
             {
                 _kalendar.Add(new Nameday(name, new DayMonth(day, month)));
+                if (!name.Equals("0"))
+                {
+                    _nameCount++;
+                }
             }
         }
 
@@ -153,9 +175,17 @@ namespace Uniza.Namedays
         /// <param name="names">Meno/mená, ktoré sa uloží/uložia do kalendára</param>
         public void Add(DayMonth dayMonth, params string[] names)
         {
+            if (!names[0].Equals("0") && this[dayMonth].Length == 0)
+            {
+                _dayCount++;
+            }
             foreach (var name in names)
             {
                 _kalendar.Add(new Nameday(name, dayMonth));
+                if (!name.Equals("0"))
+                {
+                    _nameCount++;
+                }
             }
         }
 
@@ -166,7 +196,16 @@ namespace Uniza.Namedays
         /// <returns>Vráti true ak sa podarí meno odstrániť, inak vráti false</returns>
         public bool Remove(string name)
         {
-            return Contains(name) && _kalendar.Remove(GetEnumerator().Current);
+            if (Contains(name) && _kalendar.Remove(GetEnumerator().Current))
+            {
+                _nameCount--;
+                if (GetNamedays(name).ToList().Count == 0)
+                {
+                    _dayCount--;
+                }
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

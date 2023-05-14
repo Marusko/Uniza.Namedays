@@ -31,8 +31,8 @@
                               "\n4 - vyhľadať mená podľa dátumu" +
                               "\n5 - zobraziť kalendár mien v mesiaci" +
                               "\n6 | Escape - koniec" +
-                              "\nVaša voľba: "); 
-            
+                              "\nVaša voľba: ");
+            //TODO esc
             
             if (int.TryParse(Console.ReadLine(), out _choice))
             {
@@ -84,11 +84,7 @@
                     _calendar.Clear();
                     _calendar.Load(cesta);
                     Console.WriteLine("Kalendár bol načítaný.\nPre pokračovanie stlačte Enter");
-                    /*if (Console.ReadKey().Key == ConsoleKey.Enter)
-                    {
-                        
-                    }*/
-
+                    
                     while (Console.ReadKey(true).Key != ConsoleKey.Enter)
                     {
                         
