@@ -7,4 +7,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Uniza.Namedays\Uniza.Namedays.csproj" />
+  </ItemGroup>
+
 </Project>
