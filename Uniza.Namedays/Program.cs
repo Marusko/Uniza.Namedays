@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace Uniza.Namedays
 {
@@ -9,7 +8,6 @@ namespace Uniza.Namedays
     /// </summary>
     public record NamedayCalendar : IEnumerable<Nameday>
     {
-        //TODO day count, nameCount
         /// <summary>
         /// Vráti celkový počet mien v kalendári
         /// </summary>
@@ -20,8 +18,8 @@ namespace Uniza.Namedays
         /// </summary>
         public int DayCount => _dayCount;
 
-        private int _nameCount = 0;
-        private int _dayCount = 0;
+        private int _nameCount;
+        private int _dayCount;
 
         /// <summary>
         /// Indexer vráti deň a mesiac oslavy zadaného mena
@@ -348,7 +346,10 @@ namespace Uniza.Namedays
         /// <summary>
         /// Bezparametrický konštruktor
         /// </summary>
-        public Nameday() { }
+        public Nameday()
+        {
+            Name = "0";
+        }
 
         /// <summary>
         /// Parametrický konštruktor na inicializáciu
