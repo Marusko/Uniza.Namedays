@@ -1,13 +1,10 @@
-﻿using System;
-using System.Globalization;
-using System.Xml.Xsl;
+﻿using System.Globalization;
 
 namespace Uniza.Namedays.ViewerConsoleApp
 {
     internal class ConsoleViewer
     {
         private NamedayCalendar _calendar;
-        private int _choice;
 
         public ConsoleViewer(FileInfo cesta)
         {
@@ -26,8 +23,8 @@ namespace Uniza.Namedays.ViewerConsoleApp
         public void Show()
         {
             Console.WriteLine("KALENDÁR MIEN");
-            Console.WriteLine($"Dnes {DateTime.Now.ToShortDateString()} " + (_calendar[DateTime.Now].Equals("0") ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now])}"));
-            Console.WriteLine("Zajtra " + (_calendar[DateTime.Now.AddDays(1)].Equals("0") ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now.AddDays(1)])}"));
+            Console.WriteLine($"Dnes {DateTime.Now.ToShortDateString()} " + (_calendar[DateTime.Now].Length == 0 ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now])}"));
+            Console.WriteLine("Zajtra " + (_calendar[DateTime.Now.AddDays(1)].Length == 0 ? "nemá nikto meniny" : $"má meniny: {string.Join(", ", _calendar[DateTime.Now.AddDays(1)])}"));
             Console.WriteLine();
             Console.Write("Menu\n1 - načítať kalendár" +
                               "\n2 - zobraziť štatistiku" +
@@ -38,33 +35,42 @@ namespace Uniza.Namedays.ViewerConsoleApp
                               "\nVaša voľba: ");
             //TODO esc
 
-            if (int.TryParse(Console.ReadLine(), out _choice))
+            var key = Console.ReadKey().Key;
+            Console.Clear();
+            switch (key)
             {
-                Console.Clear();
-                switch (_choice)
-                {
-                    case 1: Console.WriteLine("NAČÍTANIE\nZadajte cestu k súboru kalendára mien alebo stlačte enter pre ukončenie");
-                            Load();
-                            break;
-                    case 2: Console.WriteLine("ŠTATISTIKA");
-                            ShowStatistics();
-                            break;
-                    case 3: Console.WriteLine("VYHĽADÁVENIE MIEN\nPre ukončenie stlačte Enter");
-                            SearchNames();
-                            break;
-                    case 4: Console.WriteLine("VYHĽADÁVANIE MIEN PODĽA DÁTUMU\nPre ukončenie stlačte Enter");
-                            SearchNamesByDate();
-                            break;
-                    case 5: ShowNamedaysInMonth(DateTime.Now);
-                            break;
-                    default: Environment.Exit(0);
-                            break;
-                }
-            }
-            else
-            {
-                Console.Clear();
-                Show();
+                case ConsoleKey.D1:
+                case ConsoleKey.NumPad1:
+                    Console.WriteLine("NAČÍTANIE\nZadajte cestu k súboru kalendára mien alebo stlačte enter pre ukončenie");
+                    Load();
+                    break;
+                case ConsoleKey.D2:
+                case ConsoleKey.NumPad2:
+                    Console.WriteLine("ŠTATISTIKA");
+                    ShowStatistics();
+                    break;
+                case ConsoleKey.D3:
+                case ConsoleKey.NumPad3:
+                    Console.WriteLine("VYHĽADÁVENIE MIEN\nPre ukončenie stlačte Enter");
+                    SearchNames();
+                    break;
+                case ConsoleKey.D4:
+                case ConsoleKey.NumPad4:
+                    Console.WriteLine("VYHĽADÁVANIE MIEN PODĽA DÁTUMU\nPre ukončenie stlačte Enter");
+                    SearchNamesByDate();
+                    break;
+                case ConsoleKey.D5:
+                case ConsoleKey.NumPad5:
+                    ShowNamedaysInMonth(DateTime.Now);
+                    break;
+                case ConsoleKey.D6:
+                case ConsoleKey.NumPad6:
+                case ConsoleKey.Escape:
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Show();
+                    break;
             }
         }
 
@@ -203,7 +209,7 @@ namespace Uniza.Namedays.ViewerConsoleApp
                 int month;
                 int.TryParse(splitted?[0], out day);
                 int.TryParse(splitted?[1], out month);
-                if (_calendar[day, month][0].Equals("0"))
+                if (_calendar[day, month].Length == 0)
                 {
                     Console.WriteLine("Neboli nájdené žiadne mená!");
                     SearchNamesByDate();
@@ -272,9 +278,6 @@ namespace Uniza.Namedays.ViewerConsoleApp
                     ShowNamedaysInMonth(datum.AddYears(-1).AddMonths(-1));
                     break;
                 case ConsoleKey.Home:
-                    Console.Clear(); 
-                    ShowNamedaysInMonth(DateTime.Now);
-                    break;
                 case ConsoleKey.D: 
                     Console.Clear();
                     ShowNamedaysInMonth(DateTime.Now);

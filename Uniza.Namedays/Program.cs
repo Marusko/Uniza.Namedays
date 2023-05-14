@@ -45,7 +45,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DayMonth dayMonth] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month && !meno.Name.Equals("0")
+                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month && !meno.Name.Equals("-")
              select meno.Name).ToArray();
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DateOnly date] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("0")
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("-")
              select meno.Name).ToArray();
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DateTime date] =>
             (from meno in _kalendar
-                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("0")
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("-")
              select meno.Name).ToArray();
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[int day, int month] =>
             (from meno in _kalendar 
-                where meno.DayMonth.Day == day && meno.DayMonth.Month == month && !meno.Name.Equals("0")
+                where meno.DayMonth.Day == day && meno.DayMonth.Month == month && !meno.Name.Equals("-")
              select meno.Name).ToArray();
 
         private readonly List<Nameday> _kalendar = new();
@@ -113,7 +113,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti zoznam všetkých menín v zadanom mesiaci</returns>
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            return from nameday in _kalendar where nameday.DayMonth.Month == month && !nameday.Name.Equals("0") select nameday;
+            return from nameday in _kalendar where nameday.DayMonth.Month == month && !nameday.Name.Equals("-") select nameday;
         }
 
         /// <summary>
@@ -131,12 +131,12 @@ namespace Uniza.Namedays
         /// <param name="nameday">Štruktúra Nameday so zadaným menom a dátumom</param>
         public void Add(Nameday nameday)
         {
-            if (!nameday.Name.Equals("0"))
+            if (!nameday.Name.Equals("-"))
             {
                 _nameCount++;
             }
 
-            if (!nameday.Name.Equals("0") && this[nameday.DayMonth].Length == 0)
+            if (!nameday.Name.Equals("-") && this[nameday.DayMonth].Length == 0)
             {
                 _dayCount++;
             }
@@ -152,14 +152,14 @@ namespace Uniza.Namedays
         /// <param name="names">Meno/mená, ktoré sa uloží/uložia do kalendára</param>
         public void Add(int day, int month, params string[] names)
         {
-            if (!names[0].Equals("0") && this[day, month].Length == 0)
+            if (!names[0].Equals("-") && this[day, month].Length == 0)
             {
                 _dayCount++;
             }
             foreach (var name in names)
             {
                 _kalendar.Add(new Nameday(name, new DayMonth(day, month)));
-                if (!name.Equals("0"))
+                if (!name.Equals("-"))
                 {
                     _nameCount++;
                 }
@@ -173,14 +173,14 @@ namespace Uniza.Namedays
         /// <param name="names">Meno/mená, ktoré sa uloží/uložia do kalendára</param>
         public void Add(DayMonth dayMonth, params string[] names)
         {
-            if (!names[0].Equals("0") && this[dayMonth].Length == 0)
+            if (!names[0].Equals("-") && this[dayMonth].Length == 0)
             {
                 _dayCount++;
             }
             foreach (var name in names)
             {
                 _kalendar.Add(new Nameday(name, dayMonth));
-                if (!name.Equals("0"))
+                if (!name.Equals("-"))
                 {
                     _nameCount++;
                 }
@@ -253,13 +253,9 @@ namespace Uniza.Namedays
                 for (var i = 1; i < splitted.Length; i++)
                 {
                     var tmp = splitted[i].Trim();
-                    if (!string.IsNullOrEmpty(tmp) && !tmp.Equals("-"))
+                    if (!string.IsNullOrEmpty(tmp))
                     {
                         names.Add(tmp);
-                    }
-                    else if(tmp.Equals("-"))
-                    {
-                        names.Add("0");
                     }
                 }
 
