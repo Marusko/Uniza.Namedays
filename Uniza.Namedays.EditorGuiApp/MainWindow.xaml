@@ -3,10 +3,108 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Uniza.Namedays.EditorGuiApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Namedays" Height="450" Width="800">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Menu MaxHeight="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <MenuItem Header="File">
+                <MenuItem Header="New"/>
+                <MenuItem Header="Open..."/>
+                <MenuItem Header="Save as..."/>
+                <Separator/>
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About"/>
+            </MenuItem>
+        </Menu>
+        <GroupBox Grid.Column="1" Header="Calendar" Margin="5,18,5,5" HorizontalAlignment="Right">
+            <Grid VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Content="Today" HorizontalAlignment="Center" Margin="0,10" Padding="20,5"/>
+                <Calendar Grid.Row="1"/>
+                <Label Grid.Row="2" Content="Celebrates"/>
+                <ListBox Grid.Row="3" VerticalAlignment="Stretch" Margin="6">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBoxItem Content="test"/>
+                    <ListBoxItem Content="test2"/>
+                </ListBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="0" Header="Editor" HorizontalAlignment="Stretch" Margin="5,18,5,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Filter" Margin="5" Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Month:" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            <ComboBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            <Label Grid.Column="2" Content="Regex filter:" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            <TextBox Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        </Grid>
+                    </GroupBox>
+                    <Button Grid.Column="1" Content="Clear filter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="6,20,6,10" Padding="15,5"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox Grid.Column="0" Margin="7,7,5,7">
+                        <ListBoxItem Content="Test"/>
+                        <ListBoxItem Content="Test"/>
+                        <ListBoxItem Content="Test"/>
+                    </ListBox>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,7">
+                        <Grid VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Button Grid.Row="0" Content="Add..." Margin="5" Padding="5"/>
+                            <Button Grid.Row="1" Content="Edit..." Margin="5" Padding="5"/>
+                            <Button Grid.Row="2" Content="Remove" Margin="5" Padding="5"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Button Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5">
+                                <TextBlock TextWrapping="Wrap" TextAlignment="Center">Show on <LineBreak/> calendar</TextBlock>
+                            </Button>
+                                <Label Grid.Row="1" Content="Count 1 / 470" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
