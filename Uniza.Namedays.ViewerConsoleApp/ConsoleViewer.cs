@@ -110,7 +110,6 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         private void ShowStatistics()
         {
-            //TODO dlzka
             List<string> pismena = new List<string>();
             List<int> pocty = new List<int>();
             foreach (var nameday in _calendar.GetNamedays())
@@ -165,30 +164,38 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         private void SearchNamesByDate()
         {
-            //TODO ukoncenie na jeden riadok
             string? input;
             Console.Write("Zadajte deň a mesiac: ");
             input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input) && Console.ReadKey(true).Key == ConsoleKey.Enter)
+            if (string.IsNullOrEmpty(input))
             {
                 Console.Clear();
                 Show();
             }
-            var splitted = input?.Split(".");
-            int day;
-            int month;
-            int.TryParse(splitted?[0], out day);
-            int.TryParse(splitted?[1], out month);
-            if (_calendar[day, month][0].Equals("0")) 
+
+            if (!string.IsNullOrWhiteSpace(input))
             {
-                Console.WriteLine("Neboli nájdené žiadne mená!");
-                SearchNamesByDate();
+                var splitted = input?.Split(".");
+                int day;
+                int month;
+                int.TryParse(splitted?[0], out day);
+                int.TryParse(splitted?[1], out month);
+                if (_calendar[day, month][0].Equals("0"))
+                {
+                    Console.WriteLine("Neboli nájdené žiadne mená!");
+                    SearchNamesByDate();
+                }
+
+                for (int i = 0; i < _calendar[day, month].Length; i++)
+                {
+                    Console.WriteLine($"  {i + 1}. {_calendar[day, month][i]}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Neplatný formát dátumu!");
             }
 
-            for (int i = 0; i < _calendar[day, month].Length; i++)
-            {
-                Console.WriteLine($"  {i+1}. {_calendar[day, month][i]}");
-            }
             SearchNamesByDate();
         }
 
