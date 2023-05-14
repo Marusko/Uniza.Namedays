@@ -45,8 +45,8 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DayMonth dayMonth] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month
-                select meno.Name).ToArray();
+                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month && !meno.Name.Equals("0")
+             select meno.Name).ToArray();
 
         /// <summary>
         /// Vráti pole mien, ktoré oslavujú meniny v zadaný deň a mesiac
@@ -55,7 +55,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DateOnly date] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("0")
              select meno.Name).ToArray();
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DateTime date] =>
             (from meno in _kalendar
-                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month
-                select meno.Name).ToArray();
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month && !meno.Name.Equals("0")
+             select meno.Name).ToArray();
 
         /// <summary>
         /// Vráti pole mien, ktoré oslavujú meniny v zadaný deň a mesiac
@@ -76,8 +76,8 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[int day, int month] =>
             (from meno in _kalendar 
-                where meno.DayMonth.Day == day && meno.DayMonth.Month == month 
-                select meno.Name).ToArray();
+                where meno.DayMonth.Day == day && meno.DayMonth.Month == month && !meno.Name.Equals("0")
+             select meno.Name).ToArray();
 
         private readonly List<Nameday> _kalendar = new();
 
@@ -282,6 +282,7 @@ namespace Uniza.Namedays
         /// <param name="csvFile">Cesta k súboru v tvare FileInfo</param>
         public void Save(FileInfo csvFile)
         {
+            //TODO save
             if (!csvFile.Extension.Equals(".csv"))
             {
                 return;
@@ -290,7 +291,7 @@ namespace Uniza.Namedays
             var writer = new StreamWriter(stream);
             foreach (var nameday in _kalendar)
             {
-                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{string.Join(";", this[nameday.DayMonth.Day, nameday.DayMonth.Month])}");
+                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{string.Join(";", this[nameday.DayMonth])}");
             }
             writer.Close();
             stream.Close();

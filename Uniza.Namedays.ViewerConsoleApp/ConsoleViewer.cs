@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Xml.Xsl;
 
 namespace Uniza.Namedays.ViewerConsoleApp
 {
@@ -35,7 +37,7 @@ namespace Uniza.Namedays.ViewerConsoleApp
                               "\n6 | Escape - koniec" +
                               "\nVaša voľba: ");
             //TODO esc
-            
+
             if (int.TryParse(Console.ReadLine(), out _choice))
             {
                 Console.Clear();
@@ -47,14 +49,13 @@ namespace Uniza.Namedays.ViewerConsoleApp
                     case 2: Console.WriteLine("ŠTATISTIKA");
                             ShowStatistics();
                             break;
-                    case 3: Console.WriteLine("VYHĽADÁVENIE MIEN");
+                    case 3: Console.WriteLine("VYHĽADÁVENIE MIEN\nPre ukončenie stlačte Enter");
                             SearchNames();
                             break;
                     case 4: Console.WriteLine("VYHĽADÁVANIE MIEN PODĽA DÁTUMU\nPre ukončenie stlačte Enter");
                             SearchNamesByDate();
                             break;
-                    case 5: Console.WriteLine("KALENDÁR MENÍN");
-                            ShowNamedaysInMonth();
+                    case 5: ShowNamedaysInMonth(DateTime.Now);
                             break;
                     default: Environment.Exit(0);
                             break;
@@ -159,7 +160,29 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         private void SearchNames()
         {
+            string? input;
+            Console.Write("Zadajte meno(regulárny výraz): ");
+            input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
+            {
+                Console.Clear();
+                Show();
+            }
 
+            var pocet = _calendar.GetNamedays(input).ToList().Count;
+            if (pocet > 0)
+            {
+                for (int i = 0; i < pocet; i++)
+                {
+                    var nameday = _calendar.GetNamedays(input).ToArray()[i];
+                    Console.WriteLine($"  {i + 1}. {nameday.Name} ({nameday.DayMonth.Day}.{nameday.DayMonth.Month})");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Neboli nájdené žiadne mená!");
+            }
+            SearchNames();
         }
 
         private void SearchNamesByDate()
@@ -199,9 +222,72 @@ namespace Uniza.Namedays.ViewerConsoleApp
             SearchNamesByDate();
         }
 
-        private void ShowNamedaysInMonth()
+        private void ShowNamedaysInMonth(DateTime date)
         {
-            
+            Console.WriteLine("KALENDÁR MENÍN");
+            var datum = new DateTime(date.Year, date.Month, 1);
+            Console.WriteLine($"{DateTimeFormatInfo.CurrentInfo.GetMonthName(datum.Month)} {datum.Year}:");
+            for (int i = 1; i <= DateTime.DaysInMonth(datum.Year, datum.Month); i++)
+            {
+                if (datum == DateTime.Now.Date)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{i}.{datum.Month} {datum:ddd} {string.Join(", ", _calendar[datum])}");
+                    Console.ResetColor();
+                }
+                else if (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{i}.{datum.Month} {datum:ddd} {string.Join(", ", _calendar[datum])}");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine($"{i}.{datum.Month} {datum:ddd} {string.Join(", ", _calendar[datum])}");
+                }
+                datum = datum.AddDays(1);
+            }
+
+            Console.WriteLine("\nŠípka doľava / doprava - mesiac dozadu / dopredu\n" +
+                              "Šípka dole / hore - rok dozadu / dopredu\n" +
+                              "Kláves Home alebo D - aktuálny deň\n" +
+                              "Pre ukončenie stlačte Enter");
+            var key = Console.ReadKey().Key;
+            switch (key)
+            {
+                case ConsoleKey.LeftArrow:
+                    Console.Clear();
+                    ShowNamedaysInMonth(datum.AddMonths(-2));
+                    break;
+                case ConsoleKey.RightArrow:
+                    Console.Clear();
+                    ShowNamedaysInMonth(datum);
+                    break;
+                case ConsoleKey.UpArrow:
+                    Console.Clear(); 
+                    ShowNamedaysInMonth(datum.AddYears(1).AddMonths(-1));
+                    break;
+                case ConsoleKey.DownArrow: 
+                    Console.Clear();
+                    ShowNamedaysInMonth(datum.AddYears(-1).AddMonths(-1));
+                    break;
+                case ConsoleKey.Home:
+                    Console.Clear(); 
+                    ShowNamedaysInMonth(DateTime.Now);
+                    break;
+                case ConsoleKey.D: 
+                    Console.Clear();
+                    ShowNamedaysInMonth(DateTime.Now);
+                    break;
+                case ConsoleKey.Enter: 
+                    Console.Clear();
+                    Show(); 
+                    break;
+                default:
+                    Console.Clear();
+                    ShowNamedaysInMonth(datum.AddMonths(-1));
+                    break;
+            }
         }
     }
 }
