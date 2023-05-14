@@ -1,4 +1,6 @@
-﻿namespace Uniza.Namedays.ViewerConsoleApp
+﻿using System.Globalization;
+
+namespace Uniza.Namedays.ViewerConsoleApp
 {
     internal class ConsoleViewer
     {
@@ -42,14 +44,17 @@
                     case 1: Console.WriteLine("NAČÍTANIE\nZadajte cestu k súboru kalendára mien alebo stlačte enter pre ukončenie");
                             Load();
                             break;
-                    case 2: ShowStatistics();
+                    case 2: Console.WriteLine("ŠTATISTIKA");
+                            ShowStatistics();
                             break;
-                    case 3: SearchNames();
+                    case 3: Console.WriteLine("VYHĽADÁVENIE MIEN");
+                            SearchNames();
                             break;
                     case 4: Console.WriteLine("VYHĽADÁVANIE MIEN PODĽA DÁTUMU\nPre ukončenie stlačte Enter");
                             SearchNamesByDate();
                             break;
-                    case 5: ShowNamedaysInMonth();
+                    case 5: Console.WriteLine("KALENDÁR MENÍN");
+                            ShowNamedaysInMonth();
                             break;
                     default: Environment.Exit(0);
                             break;
@@ -105,12 +110,38 @@
 
         private void ShowStatistics()
         {
-            Console.WriteLine("ŠTATISTIKA");
+            //TODO abeceda, dlzka
+            Console.WriteLine($"Celkový počet mien v kalendári: {_calendar.NameCount}");
+            Console.WriteLine($"Celkový počet dní obsahujúci mená v kalendári: {_calendar.DayCount}");
+            Console.WriteLine("Celkový počet mien v jednotlivých mesiacoch:");
+            for (int i = 1; i <= 12; i++)
+            {
+                int pocet = _calendar.GetNamedays(i).ToList().Count;
+                Console.WriteLine($"  {DateTimeFormatInfo.CurrentInfo.GetMonthName(i)}: {pocet}");
+            }
+            /*Console.WriteLine("Počet mien podľa začiatočných písmen");
+            char[] pismena = "ABCDEFGHIJKLMNOPQRSŠTUVWXYZŽ".ToArray();
+            foreach (char pismeno in pismena)
+            {
+                Console.WriteLine($"  {pismeno}: ");
+            }
+            Console.WriteLine("Počet mien podľa dĺžky znakov");
+            for (int i = 3; i <= 10; i++)
+            {
+                Console.WriteLine($"  {i}: ");
+            }*/
+            Console.WriteLine("Pre ukončenie stlačte Enter");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter)
+            {
+
+            }
+            Console.Clear();
+            Show();
         }
 
         private void SearchNames()
         {
-            Console.WriteLine("VYHĽADÁVENIE MIEN");
+
         }
 
         private void SearchNamesByDate()
@@ -144,7 +175,7 @@
 
         private void ShowNamedaysInMonth()
         {
-            Console.WriteLine("KALENDÁR MENÍN");
+            
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DayMonth dayMonth] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month 
+                where meno.DayMonth.Day == dayMonth.Day && meno.DayMonth.Month == dayMonth.Month
                 select meno.Name).ToArray();
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace Uniza.Namedays
         /// <returns>Vráti pole mien, ktoré oslavujú meniny v zadaný dátum</returns>
         public string[] this[DateOnly date] => 
             (from meno in _kalendar 
-                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month 
-                select meno.Name).ToArray();
+                where meno.DayMonth.Day == date.Day && meno.DayMonth.Month == date.Month
+             select meno.Name).ToArray();
 
         /// <summary>
         /// Vráti pole mien, ktoré oslavujú meniny v zadaný deň a mesiac
@@ -113,7 +113,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti zoznam všetkých menín v zadanom mesiaci</returns>
         public IEnumerable<Nameday> GetNamedays(int month)
         {
-            return from nameday in _kalendar where nameday.DayMonth.Month == month select nameday;
+            return from nameday in _kalendar where nameday.DayMonth.Month == month && !nameday.Name.Equals("0") select nameday;
         }
 
         /// <summary>
