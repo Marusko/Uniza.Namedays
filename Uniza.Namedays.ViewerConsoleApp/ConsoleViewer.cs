@@ -33,8 +33,7 @@ namespace Uniza.Namedays.ViewerConsoleApp
                               "\n5 - zobraziť kalendár mien v mesiaci" +
                               "\n6 | Escape - koniec" +
                               "\nVaša voľba: ");
-            //TODO esc
-
+           
             var key = Console.ReadKey().Key;
             Console.Clear();
             switch (key)

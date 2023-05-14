@@ -278,16 +278,38 @@ namespace Uniza.Namedays
         /// <param name="csvFile">Cesta k súboru v tvare FileInfo</param>
         public void Save(FileInfo csvFile)
         {
-            //TODO save
             if (!csvFile.Extension.Equals(".csv"))
             {
                 return;
             }
+            
             var stream = csvFile.Open(FileMode.Open);
+            stream.SetLength(0);
             var writer = new StreamWriter(stream);
+            var multiple = 0;
             foreach (var nameday in _kalendar)
             {
-                writer.WriteLine($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{string.Join(";", this[nameday.DayMonth])}");
+                if (multiple == 0)
+                {
+                    writer.Write($"{nameday.DayMonth.Day}. {nameday.DayMonth.Month}.;{string.Join(";", this[nameday.DayMonth])}");
+                    if (this[nameday.DayMonth].Length == 0)
+                    {
+                        writer.Write("-;;");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < (3 - this[nameday.DayMonth].Length); i++)
+                        {
+                            writer.Write(";");
+                        }
+                        multiple = this[nameday.DayMonth].Length - 1;
+                    }
+                    writer.WriteLine();
+                }
+                else
+                {
+                    multiple--;
+                }
             }
             writer.Close();
             stream.Close();
