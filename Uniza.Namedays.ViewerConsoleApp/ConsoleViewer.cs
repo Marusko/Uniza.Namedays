@@ -110,7 +110,23 @@ namespace Uniza.Namedays.ViewerConsoleApp
 
         private void ShowStatistics()
         {
-            //TODO abeceda, dlzka
+            //TODO dlzka
+            List<string> pismena = new List<string>();
+            List<int> pocty = new List<int>();
+            foreach (var nameday in _calendar.GetNamedays())
+            {
+                if (!pismena.Contains(nameday.Name.Substring(0, 1)) && !nameday.Name.Substring(0, 1).Equals("0"))
+                {
+                    pismena.Add(nameday.Name.Substring(0, 1));
+                }
+
+                if (!pocty.Contains(nameday.Name.Length) && !nameday.Name.Equals("0"))
+                {
+                    pocty.Add(nameday.Name.Length);
+                }
+            }
+            pismena.Sort();
+            pocty.Sort();
             Console.WriteLine($"Celkový počet mien v kalendári: {_calendar.NameCount}");
             Console.WriteLine($"Celkový počet dní obsahujúci mená v kalendári: {_calendar.DayCount}");
             Console.WriteLine("Celkový počet mien v jednotlivých mesiacoch:");
@@ -121,25 +137,18 @@ namespace Uniza.Namedays.ViewerConsoleApp
             }
 
             Console.WriteLine("Počet mien podľa začiatočných písmen");
-            List<string> pismena = new List<string>();
-            foreach (var nameday in _calendar.GetNamedays())
-            {
-                if (!pismena.Contains(nameday.Name.Substring(0,1)) && !nameday.Name.Substring(0, 1).Equals("0"))
-                {
-                    pismena.Add(nameday.Name.Substring(0, 1));
-                }
-            }
-            pismena.Sort();
             foreach (var pismeno in pismena)
             {
                 Console.WriteLine($"  {pismeno}: {_calendar.GetNamedays(pismeno).Count()}");
             }
 
-            /*Console.WriteLine("Počet mien podľa dĺžky znakov");
-            for (int i = 3; i <= 10; i++)
+            Console.WriteLine("Počet mien podľa dĺžky znakov");
+            
+            foreach (var i in pocty)
             {
-                Console.WriteLine($"  {i}: ");
-            }*/
+                int p = _calendar.GetNamedays($@"\b.{{{i}}}\b").Count();
+                Console.WriteLine($"  {i}: {p}");
+            }
             Console.WriteLine("Pre ukončenie stlačte Enter");
             while (Console.ReadKey(true).Key != ConsoleKey.Enter)
             {
