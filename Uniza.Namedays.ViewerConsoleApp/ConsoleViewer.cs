@@ -232,8 +232,9 @@ namespace Uniza.Namedays.ViewerConsoleApp
         {
             Console.WriteLine("KALENDÁR MENÍN");
             var datum = new DateTime(date.Year, date.Month, 1);
+            var pocetDni = DateTime.DaysInMonth(datum.Year, datum.Month);
             Console.WriteLine($"{DateTimeFormatInfo.CurrentInfo.GetMonthName(datum.Month)} {datum.Year}:");
-            for (int i = 1; i <= DateTime.DaysInMonth(datum.Year, datum.Month); i++)
+            for (int i = 1; i <= pocetDni; i++)
             {
                 if (datum == DateTime.Now.Date)
                 {
