@@ -76,24 +76,21 @@ namespace Uniza.Namedays.ViewerConsoleApp
         private void Load()
         {
             Console.WriteLine("Zadajte cestu ku súboru: ");
-            FileInfo? cesta = null;
-            try
-            {
-                cesta = new FileInfo(Console.ReadLine() ?? throw new InvalidOperationException());
-            }
-            catch (Exception)
+            var input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
             {
                 Console.Clear();
                 Show();
             }
-            if (cesta != null && !cesta.Exists)
-            {
-                Console.WriteLine("Zadaný súbor neexistuje!");
-                Load();
-            }
             else
             {
-                if (cesta != null && !cesta.Extension.ToLower().Equals(".csv"))
+                var cesta = new FileInfo(input);
+                if (!cesta.Exists)
+                {
+                    Console.WriteLine("Zadaný súbor neexistuje!");
+                    Load();
+                }
+                else if (!cesta.Extension.ToLower().Equals(".csv"))
                 {
                     Console.WriteLine($"Zadaný súbor {cesta.Name} nie je typu CSV!");
                     Load();
@@ -101,13 +98,10 @@ namespace Uniza.Namedays.ViewerConsoleApp
                 else
                 {
                     _calendar.Clear();
-                    if (cesta != null) _calendar.Load(cesta);
+                    _calendar.Load(cesta);
                     Console.WriteLine("Kalendár bol načítaný.\nPre pokračovanie stlačte Enter");
-                    
-                    while (Console.ReadKey(true).Key != ConsoleKey.Enter)
-                    {
-                        
-                    }
+
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
                     Console.Clear();
                     Show();
                 }
@@ -134,6 +128,7 @@ namespace Uniza.Namedays.ViewerConsoleApp
             pocty.Sort();
             Console.WriteLine($"Celkový počet mien v kalendári: {_calendar.NameCount}");
             Console.WriteLine($"Celkový počet dní obsahujúci mená v kalendári: {_calendar.DayCount}");
+
             Console.WriteLine("Celkový počet mien v jednotlivých mesiacoch:");
             for (int i = 1; i <= 12; i++)
             {
@@ -148,17 +143,14 @@ namespace Uniza.Namedays.ViewerConsoleApp
             }
 
             Console.WriteLine("Počet mien podľa dĺžky znakov");
-            
             foreach (var i in pocty)
             {
                 int p = _calendar.GetNamedays($@"\b.{{{i}}}\b").Count();
                 Console.WriteLine($"  {i}: {p}");
             }
-            Console.WriteLine("Pre ukončenie stlačte Enter");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter)
-            {
 
-            }
+            Console.WriteLine("Pre ukončenie stlačte Enter");
+            while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
             Console.Clear();
             Show();
         }
@@ -168,26 +160,29 @@ namespace Uniza.Namedays.ViewerConsoleApp
             string? input;
             Console.Write("Zadajte meno(regulárny výraz): ");
             input = Console.ReadLine();
+            int pocet;
             if (string.IsNullOrEmpty(input))
             {
                 Console.Clear();
                 Show();
             }
-
-            var pocet = _calendar.GetNamedays(input).ToList().Count;
-            if (pocet > 0)
-            {
-                for (int i = 0; i < pocet; i++)
-                {
-                    var nameday = _calendar.GetNamedays(input).ToArray()[i];
-                    Console.WriteLine($"  {i + 1}. {nameday.Name} ({nameday.DayMonth.Day}.{nameday.DayMonth.Month})");
-                }
-            }
             else
             {
-                Console.WriteLine("Neboli nájdené žiadne mená!");
+                pocet = _calendar.GetNamedays(input).ToList().Count;
+                if (pocet > 0)
+                {
+                    for (int i = 0; i < pocet; i++)
+                    {
+                        var nameday = _calendar.GetNamedays(input).ToArray()[i];
+                        Console.WriteLine($"  {i + 1}. {nameday.Name} ({nameday.DayMonth.Day}.{nameday.DayMonth.Month})");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Neboli nájdené žiadne mená!");
+                }
+                SearchNames();
             }
-            SearchNames();
         }
 
         private void SearchNamesByDate()
@@ -200,31 +195,32 @@ namespace Uniza.Namedays.ViewerConsoleApp
                 Console.Clear();
                 Show();
             }
-
-            if (!string.IsNullOrWhiteSpace(input))
-            {
-                var splitted = input?.Split(".");
-                int day;
-                int month;
-                int.TryParse(splitted?[0], out day);
-                int.TryParse(splitted?[1], out month);
-                if (_calendar[day, month].Length == 0)
-                {
-                    Console.WriteLine("Neboli nájdené žiadne mená!");
-                    SearchNamesByDate();
-                }
-
-                for (int i = 0; i < _calendar[day, month].Length; i++)
-                {
-                    Console.WriteLine($"  {i + 1}. {_calendar[day, month][i]}");
-                }
-            }
             else
             {
-                Console.WriteLine("Neplatný formát dátumu!");
-            }
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    var splitted = input.Split(".");
+                    int day;
+                    int month;
+                    int.TryParse(splitted[0], out day);
+                    int.TryParse(splitted[1], out month);
+                    if (_calendar[day, month].Length == 0)
+                    {
+                        Console.WriteLine("Neboli nájdené žiadne mená!");
+                        SearchNamesByDate();
+                    }
 
-            SearchNamesByDate();
+                    for (int i = 0; i < _calendar[day, month].Length; i++)
+                    {
+                        Console.WriteLine($"  {i + 1}. {_calendar[day, month][i]}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Neplatný formát dátumu!");
+                }
+                SearchNamesByDate();
+            }
         }
 
         private void ShowNamedaysInMonth(DateTime date)
