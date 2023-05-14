@@ -81,13 +81,20 @@
                 }
                 else
                 {
+                    _calendar.Clear();
                     _calendar.Load(cesta);
                     Console.WriteLine("Kalendár bol načítaný.\nPre pokračovanie stlačte Enter");
-                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    /*if (Console.ReadKey().Key == ConsoleKey.Enter)
                     {
-                        Console.Clear();
-                        Show();
+                        
+                    }*/
+
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter)
+                    {
+                        
                     }
+                    Console.Clear();
+                    Show();
                 }
             }
         }
