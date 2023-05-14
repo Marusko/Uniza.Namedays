@@ -119,13 +119,23 @@ namespace Uniza.Namedays.ViewerConsoleApp
                 int pocet = _calendar.GetNamedays(i).ToList().Count;
                 Console.WriteLine($"  {DateTimeFormatInfo.CurrentInfo.GetMonthName(i)}: {pocet}");
             }
-            /*Console.WriteLine("Počet mien podľa začiatočných písmen");
-            char[] pismena = "ABCDEFGHIJKLMNOPQRSŠTUVWXYZŽ".ToArray();
-            foreach (char pismeno in pismena)
+
+            Console.WriteLine("Počet mien podľa začiatočných písmen");
+            List<string> pismena = new List<string>();
+            foreach (var nameday in _calendar.GetNamedays())
             {
-                Console.WriteLine($"  {pismeno}: ");
+                if (!pismena.Contains(nameday.Name.Substring(0,1)) && !nameday.Name.Substring(0, 1).Equals("0"))
+                {
+                    pismena.Add(nameday.Name.Substring(0, 1));
+                }
             }
-            Console.WriteLine("Počet mien podľa dĺžky znakov");
+            pismena.Sort();
+            foreach (var pismeno in pismena)
+            {
+                Console.WriteLine($"  {pismeno}: {_calendar.GetNamedays(pismeno).Count()}");
+            }
+
+            /*Console.WriteLine("Počet mien podľa dĺžky znakov");
             for (int i = 3; i <= 10; i++)
             {
                 Console.WriteLine($"  {i}: ");
