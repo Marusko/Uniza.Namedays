@@ -104,6 +104,14 @@ namespace Uniza.Namedays
         /// <returns>Vráti zoznam všetkých menín v kalendári</returns>
         public IEnumerable<Nameday> GetNamedays()
         {
+            _kalendar.RemoveAll(nameday =>
+            {
+                if (nameday.Name.Equals("-"))
+                {
+                    return true;
+                }
+                return false;
+            });
             return _kalendar;
         }
 

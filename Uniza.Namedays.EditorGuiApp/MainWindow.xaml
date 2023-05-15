@@ -68,14 +68,14 @@
                             <TextBox x:Name="RegexTextBox" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                         </Grid>
                     </GroupBox>
-                    <Button x:Name="ClearFilterButton" Grid.Column="1" Content="Clear filter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="6,20,6,10" Padding="15,5"/>
+                    <Button Grid.Column="1" Content="Clear filter" Click="ClearFilter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="6,20,6,10" Padding="15,5"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Grid.Column="0" Margin="7,7,5,7"/>
+                    <ListBox x:Name="FilterNamedaysListBox" Grid.Column="0" Margin="7,7,5,7"/>
                     <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,7">
                         <Grid VerticalAlignment="Top">
                             <Grid.RowDefinitions>
@@ -84,18 +84,18 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Button Grid.Row="0" Content="Add..." Margin="5" Padding="5"/>
-                            <Button Grid.Row="1" Content="Edit..." Margin="5" Padding="5"/>
-                            <Button Grid.Row="2" Content="Remove" Margin="5" Padding="5"/>
+                            <Button Grid.Row="1" Content="Edit..." Margin="5" Padding="5" IsEnabled="False"/>
+                            <Button Grid.Row="2" Content="Remove" Margin="5" Padding="5" IsEnabled="False"/>
                         </Grid>
                         <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Button Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5">
+                            <Button Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5" IsEnabled="False">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">Show on <LineBreak/> calendar</TextBlock>
                             </Button>
-                                <Label Grid.Row="1" Content="Count 1 / 470" VerticalAlignment="Bottom"/>
+                                <Label x:Name="CountLabel" Grid.Row="1" Content="Count 1 / 470" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Grid>
                 </Grid>
