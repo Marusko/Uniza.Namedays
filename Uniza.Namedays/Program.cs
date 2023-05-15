@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Uniza.Namedays
@@ -389,12 +388,6 @@ namespace Uniza.Namedays
         {
             Name = name;
             DayMonth = dayMonth;
-        }
-
-        override 
-        public string ToString()
-        {
-            return Name + " (" + DayMonth.Day + "." + DayMonth.Month + ")";
         }
     }
 }

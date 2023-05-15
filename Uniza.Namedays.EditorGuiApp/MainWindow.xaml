@@ -75,7 +75,23 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox x:Name="FilterNamedaysListBox" Grid.Column="0" Margin="7,7,5,7"/>
+                    <ListBox x:Name="FilterNamedaysListBox" Grid.Column="0" Margin="7,7,5,7">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Label>
+                                        <Label.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{Binding DayMonth.Day}" ContentStringFormat=" {0}." Margin="0,-5,0,-10"/>
+                                                <Label Content="{Binding DayMonth.Month}" ContentStringFormat=" {0}." Margin="-12,-5,0,-10"/>
+                                            </StackPanel>
+                                        </Label.Content>
+                                    </Label>
+                                    <Label Content="{Binding Name}" FontSize="17"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0,7">
                         <Grid VerticalAlignment="Top">
                             <Grid.RowDefinitions>
@@ -95,7 +111,7 @@
                             <Button x:Name="ShowOnButton" Click="ShowOnCalendar" Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5" IsEnabled="False">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">Show on <LineBreak/> calendar</TextBlock>
                             </Button>
-                                <Label x:Name="CountLabel" Grid.Row="1" Content="Count 1 / 470" VerticalAlignment="Bottom"/>
+                                <Label x:Name="CountLabel" Grid.Row="1" Content="Count 0 / 0" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Grid>
                 </Grid>

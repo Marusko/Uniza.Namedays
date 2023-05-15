@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Uniza.Namedays.EditorGuiApp"
         mc:Ignorable="d"
         Title="Edit nameday" Height="150" Width="300">
     <Grid>
@@ -24,7 +23,7 @@
             <DatePicker x:Name="EditDatePicker" Grid.Column="1"/>
         </Grid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Button Click="OkCloseWindow" Content="OK" Padding="30,5" Margin="5"/>
+            <Button Click="CloseWindow" Content="OK" Padding="30,5" Margin="5"/>
             <Button Click="CloseWindow" Content="Cancel" Padding="20,5" Margin="5"/>
         </StackPanel>
     </Grid>
