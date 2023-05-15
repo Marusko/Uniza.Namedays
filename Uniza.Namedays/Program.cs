@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Uniza.Namedays
@@ -20,6 +21,7 @@ namespace Uniza.Namedays
 
         private int _nameCount;
         private int _dayCount;
+        private List<Nameday>.Enumerator _enumerator;
 
         /// <summary>
         /// Indexer vráti deň a mesiac oslavy zadaného mena
@@ -32,7 +34,7 @@ namespace Uniza.Namedays
             {
                 if (Contains(name))
                 {
-                    return GetEnumerator().Current.DayMonth;
+                    return _enumerator.Current.DayMonth;
                 }
                 return null;
             }
@@ -202,7 +204,7 @@ namespace Uniza.Namedays
         /// <returns>Vráti true ak sa podarí meno odstrániť, inak vráti false</returns>
         public bool Remove(string name)
         {
-            if (Contains(name) && _kalendar.Remove(GetEnumerator().Current))
+            if (Contains(name) && _kalendar.Remove(_enumerator.Current))
             {
                 _nameCount--;
                 if (GetNamedays(name).ToList().Count == 0)
@@ -221,10 +223,10 @@ namespace Uniza.Namedays
         /// <returns>Vráti true ak sa meno v kalendári nachádza, inak vráti false</returns>
         public bool Contains(string name)
         {
-            GetEnumerator().Reset();
-            while (GetEnumerator().MoveNext())
+            _enumerator = (List<Nameday>.Enumerator)GetEnumerator();
+            while (_enumerator.MoveNext())
             {
-                if (GetEnumerator().Current.Name.Equals(name))
+                if (_enumerator.Current.Name.Equals(name))
                 {
                     return true;
                 }
@@ -364,11 +366,11 @@ namespace Uniza.Namedays
         /// <summary>
         /// Vlastnosť vracajúca meno, ktoré oslavuje meniny
         /// </summary>
-        public string Name { get; init; }
+        public string Name { get; set; }
         /// <summary>
         /// Vlastnosť vracajúca deň a mesiac menín
         /// </summary>
-        public DayMonth DayMonth { get; init; }
+        public DayMonth DayMonth { get; set; }
 
         /// <summary>
         /// Bezparametrický konštruktor
@@ -387,6 +389,12 @@ namespace Uniza.Namedays
         {
             Name = name;
             DayMonth = dayMonth;
+        }
+
+        override 
+        public string ToString()
+        {
+            return Name + " (" + DayMonth.Day + "." + DayMonth.Month + ")";
         }
     }
 }

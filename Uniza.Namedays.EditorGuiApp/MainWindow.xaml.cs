@@ -12,6 +12,7 @@ namespace Uniza.Namedays.EditorGuiApp
 {
     //TODO regex
     //TODO listitems
+    //TODO enable/disable
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -33,6 +34,13 @@ namespace Uniza.Namedays.EditorGuiApp
             }
             MonthComboBox.SelectedIndex = 12;
             CountLabel.Content = $"Count: {FilterNamedaysListBox.Items.Count} / {_calendar.NameCount}";
+
+            FilterNamedaysListBox.SelectionChanged += (sender, e) =>
+            {
+                EditButton.IsEnabled = true;
+                RemoveButton.IsEnabled = true;
+                ShowOnButton.IsEnabled = true;
+            };
         }
 
         private void MenuNew(object sender, EventArgs e)
@@ -148,10 +156,55 @@ namespace Uniza.Namedays.EditorGuiApp
             FilterNamedaysListBox.Items.Clear();
             foreach (var mena in spojene)
             {
-                FilterNamedaysListBox.Items.Add($"{mena.Name} ({mena.DayMonth.Day}.{mena.DayMonth.Month})");
+                FilterNamedaysListBox.Items.Add(mena);
             }
 
             CountLabel.Content = $"Count: {FilterNamedaysListBox.Items.Count} / {_calendar.NameCount}";
+        }
+
+        private void AddNew(object sender, EventArgs e)
+        {
+            var newNameday = new NewWindow();
+            newNameday.ShowDialog();
+            if (newNameday.NamedayDate != null && newNameday.Nameday != null)
+            {
+                _calendar.Add(newNameday.NamedayDate.Value.Day, 
+                newNameday.NamedayDate.Value.Month, newNameday.Nameday);
+            }
+            CountLabel.Content = $"Count: {FilterNamedaysListBox.Items.Count} / {_calendar.NameCount}";
+        }
+        private void Edit(object sender, EventArgs e)
+        {
+            var selectedItem = (Nameday)FilterNamedaysListBox.SelectedItem;
+            var editNameday = new EditWindow();
+            editNameday.EditDatePicker.SelectedDate = selectedItem.DayMonth.ToDateTime();
+            editNameday.EditTextBox.Text = selectedItem.Name;
+            editNameday.ShowDialog();
+            if (editNameday.NamedayDate != null && editNameday.Nameday != null)
+            {
+                _calendar.Remove(selectedItem.Name);
+                _calendar.Add(new DayMonth(editNameday.NamedayDate.Value.Day, editNameday.NamedayDate.Value.Month),
+                    editNameday.Nameday);
+            }
+            FilterChanged(sender, e);
+        }
+        private void Remove(object sender, EventArgs e)
+        {
+            var selectedItem = (Nameday)FilterNamedaysListBox.SelectedItem;
+            var remove = MessageBox.Show($"Do you really want to remove selected nameday({selectedItem.Name})?",
+                "Remove nameday", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (remove == MessageBoxResult.Yes)
+            {
+                _calendar.Remove(selectedItem.Name);
+            }
+            FilterChanged(sender, e);
+        }
+
+        private void ShowOnCalendar(object sender, EventArgs e)
+        {
+            var selectedItem = (Nameday)FilterNamedaysListBox.SelectedItem;
+            Calendar.SelectedDate = selectedItem.DayMonth.ToDateTime();
+            Calendar.DisplayDate = selectedItem.DayMonth.ToDateTime();
         }
     }
 }

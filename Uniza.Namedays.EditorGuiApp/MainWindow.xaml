@@ -83,16 +83,16 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Button Grid.Row="0" Content="Add..." Margin="5" Padding="5"/>
-                            <Button Grid.Row="1" Content="Edit..." Margin="5" Padding="5" IsEnabled="False"/>
-                            <Button Grid.Row="2" Content="Remove" Margin="5" Padding="5" IsEnabled="False"/>
+                            <Button Grid.Row="0" Click="AddNew" Content="Add..." Margin="5" Padding="5"/>
+                            <Button x:Name="EditButton" Grid.Row="1" Click="Edit" Content="Edit..." Margin="5" Padding="5" IsEnabled="False"/>
+                            <Button x:Name="RemoveButton" Grid.Row="2" Click="Remove" Content="Remove" Margin="5" Padding="5" IsEnabled="False"/>
                         </Grid>
                         <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Button Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5" IsEnabled="False">
+                            <Button x:Name="ShowOnButton" Click="ShowOnCalendar" Grid.Row="0" VerticalAlignment="Top" Margin="5" Padding="20,5" IsEnabled="False">
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Center">Show on <LineBreak/> calendar</TextBlock>
                             </Button>
                                 <Label x:Name="CountLabel" Grid.Row="1" Content="Count 1 / 470" VerticalAlignment="Bottom"/>
