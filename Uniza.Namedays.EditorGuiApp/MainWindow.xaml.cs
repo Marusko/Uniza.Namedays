@@ -10,6 +10,8 @@ using Microsoft.Win32;
 
 namespace Uniza.Namedays.EditorGuiApp
 {
+    //TODO regex
+    //TODO listitems
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
