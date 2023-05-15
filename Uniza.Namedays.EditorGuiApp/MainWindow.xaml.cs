@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.Win32;
 
 namespace Uniza.Namedays.EditorGuiApp
@@ -9,13 +11,25 @@ namespace Uniza.Namedays.EditorGuiApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private NamedayCalendar _calendar;
         public MainWindow()
         {
             InitializeComponent();
             _calendar = new NamedayCalendar();
+            DateLabel.Content = DateTime.Now.ToShortDateString() + " celebrates:";
+            Calendar.SelectedDatesChanged += (object sender, SelectionChangedEventArgs e) =>
+            {
+                DateLabel.Content = $"{Calendar.SelectedDate.Value:dd.MM.yyyy} celebrates:";
+                NamedayListbox.Items.Clear();
+                foreach (var date in _calendar[Calendar.SelectedDate.Value])
+                {
+                    NamedayListbox.Items.Add(date);
+                }
+
+                Mouse.Capture(null);
+            };
         }
 
         public void MenuNew(object sender, EventArgs e)
@@ -27,6 +41,8 @@ namespace Uniza.Namedays.EditorGuiApp
                 {
                     _calendar.Clear();
                 }
+                NamedayListbox.Items.Clear();
+                NamedayListbox.Items.Add("No data available");
             }
         }
         public void MenuOpen(object sender, EventArgs e)
@@ -35,6 +51,11 @@ namespace Uniza.Namedays.EditorGuiApp
             result.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
             result.ShowDialog();
             _calendar.Load(new FileInfo(result.FileName));
+            NamedayListbox.Items.Clear();
+            foreach (var date in _calendar[DateTime.Now])
+            {
+                NamedayListbox.Items.Add(date);
+            }
         }
         public void MenuSave(object sender, EventArgs e)
         {
@@ -51,6 +72,18 @@ namespace Uniza.Namedays.EditorGuiApp
         {
             var about = new AboutWindow();
             about.ShowDialog();
+        }
+
+        public void SetToday(object sender, EventArgs e)
+        {
+            Calendar.DisplayDate = DateTime.Now;
+            Calendar.SelectedDate = DateTime.Now;
+            DateLabel.Content = Calendar.SelectedDate.Value.ToString("dd.MM.yyyy") + " celebrates:";
+            NamedayListbox.Items.Clear();
+            foreach (var date in _calendar[Calendar.SelectedDate.Value])
+            {
+                NamedayListbox.Items.Add(date);
+            }
         }
     }
 }

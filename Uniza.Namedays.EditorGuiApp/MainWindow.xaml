@@ -30,17 +30,16 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Content="Today" HorizontalAlignment="Center" Margin="0,10" Padding="20,5"/>
-                <Calendar Grid.Row="1"/>
-                <Label Grid.Row="2" Content="Celebrates"/>
-                <ListBox Grid.Row="3" VerticalAlignment="Stretch" Margin="6">
+                <Button Grid.Row="0" Content="Today" Click="SetToday" HorizontalAlignment="Center" Margin="0,10" Padding="20,5"/>
+                <Calendar x:Name="Calendar" Grid.Row="1"/>
+                <Label x:Name="DateLabel" Grid.Row="2" Content="Celebrates"/>
+                <ListBox x:Name="NamedayListbox" Grid.Row="3" VerticalAlignment="Stretch" Margin="6">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="Focusable" Value="False"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
-                    <ListBoxItem Content="test"/>
-                    <ListBoxItem Content="test2"/>
+                    <ListBoxItem Content="No data available"/>
                 </ListBox>
             </Grid>
         </GroupBox>
