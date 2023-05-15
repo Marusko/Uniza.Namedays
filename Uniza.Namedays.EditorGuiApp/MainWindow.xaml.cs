@@ -12,7 +12,6 @@ namespace Uniza.Namedays.EditorGuiApp
 {
     //TODO regex
     //TODO listitems
-    //TODO enable/disable
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -35,12 +34,9 @@ namespace Uniza.Namedays.EditorGuiApp
             MonthComboBox.SelectedIndex = 12;
             CountLabel.Content = $"Count: {FilterNamedaysListBox.Items.Count} / {_calendar.NameCount}";
 
-            FilterNamedaysListBox.SelectionChanged += (sender, e) =>
-            {
-                EditButton.IsEnabled = true;
-                RemoveButton.IsEnabled = true;
-                ShowOnButton.IsEnabled = true;
-            };
+            FilterNamedaysListBox.GotFocus += EnableButtons;
+            MonthComboBox.GotFocus += DisableButtons;
+            RegexTextBox.GotFocus += DisableButtons;
         }
 
         private void MenuNew(object sender, EventArgs e)
@@ -122,11 +118,12 @@ namespace Uniza.Namedays.EditorGuiApp
             MonthComboBox.SelectedIndex = 12;
             FilterNamedaysListBox.Items.Clear();
             CountLabel.Content = $"Count: {FilterNamedaysListBox.Items.Count} / {_calendar.NameCount}";
+            DisableButtons(sender, e);
         }
         private void FilterChanged(object? sender, EventArgs e)
         {
-            IEnumerable<Nameday>? menaRegex = null;
-            if (sender.GetType() == typeof(TextBox) && ((KeyEventArgs)e).Key == Key.Enter)
+            IEnumerable<Nameday>? menaRegex;
+            if (sender != null && sender.GetType() == typeof(TextBox) && ((KeyEventArgs)e).Key == Key.Enter)
             {
                 menaRegex = _calendar.GetNamedays(RegexTextBox.Text);
             }
@@ -205,6 +202,20 @@ namespace Uniza.Namedays.EditorGuiApp
             var selectedItem = (Nameday)FilterNamedaysListBox.SelectedItem;
             Calendar.SelectedDate = selectedItem.DayMonth.ToDateTime();
             Calendar.DisplayDate = selectedItem.DayMonth.ToDateTime();
+        }
+
+        private void EnableButtons(object sender, EventArgs e)
+        {
+            EditButton.IsEnabled = true;
+            RemoveButton.IsEnabled = true;
+            ShowOnButton.IsEnabled = true;
+        }
+
+        private void DisableButtons(object sender, EventArgs e)
+        {
+            EditButton.IsEnabled = false;
+            RemoveButton.IsEnabled = false;
+            ShowOnButton.IsEnabled = false;
         }
     }
 }
