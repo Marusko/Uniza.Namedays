@@ -27,12 +27,12 @@ namespace Uniza.Namedays.EditorGuiApp
                 {
                     NamedayListbox.Items.Add(date);
                 }
-
                 Mouse.Capture(null);
             };
+
         }
 
-        public void MenuNew(object sender, EventArgs e)
+        private void MenuNew(object sender, EventArgs e)
         {
             if (_calendar.GetNamedays().ToList().Count > 0)
             {
@@ -45,7 +45,7 @@ namespace Uniza.Namedays.EditorGuiApp
                 NamedayListbox.Items.Add("No data available");
             }
         }
-        public void MenuOpen(object sender, EventArgs e)
+        private void MenuOpen(object sender, EventArgs e)
         {
             var result = new OpenFileDialog();
             result.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
@@ -57,24 +57,24 @@ namespace Uniza.Namedays.EditorGuiApp
                 NamedayListbox.Items.Add(date);
             }
         }
-        public void MenuSave(object sender, EventArgs e)
+        private void MenuSave(object sender, EventArgs e)
         {
             var save = new SaveFileDialog();
             save.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
             save.ShowDialog();
             _calendar.Save(new FileInfo(save.FileName));
         }
-        public void MenuExit(object sender, EventArgs e)
+        private void MenuExit(object sender, EventArgs e)
         {
             Environment.Exit(0);
         }
-        public void MenuAbout(object sender, EventArgs e)
+        private void MenuAbout(object sender, EventArgs e)
         {
             var about = new AboutWindow();
             about.ShowDialog();
         }
 
-        public void SetToday(object sender, EventArgs e)
+        private void SetToday(object sender, EventArgs e)
         {
             Calendar.DisplayDate = DateTime.Now;
             Calendar.SelectedDate = DateTime.Now;
