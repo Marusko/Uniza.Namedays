@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 
@@ -19,15 +18,18 @@ namespace Uniza.Namedays.EditorGuiApp
             InitializeComponent();
             _calendar = new NamedayCalendar();
             DateLabel.Content = DateTime.Now.ToShortDateString() + " celebrates:";
-            Calendar.SelectedDatesChanged += (object sender, SelectionChangedEventArgs e) =>
+            Calendar.SelectedDatesChanged += (sender, e) =>
             {
-                DateLabel.Content = $"{Calendar.SelectedDate.Value:dd.MM.yyyy} celebrates:";
-                NamedayListbox.Items.Clear();
-                foreach (var date in _calendar[Calendar.SelectedDate.Value])
+                if (Calendar.SelectedDate != null)
                 {
-                    NamedayListbox.Items.Add(date);
+                    DateLabel.Content = $"{Calendar.SelectedDate.Value:dd.MM.yyyy} celebrates:";
+                    NamedayListbox.Items.Clear();
+                    foreach (var date in _calendar[Calendar.SelectedDate.Value])
+                    {
+                        NamedayListbox.Items.Add(date);
+                    }
+                    Mouse.Capture(null);
                 }
-                Mouse.Capture(null);
             };
 
         }
